@@ -1,5 +1,7 @@
 ﻿using BrokeProtocol.API;
 using BrokeProtocol.Entities;
+using BrokeProtocol.Managers;
+using BrokeProtocol.Utility;
 using HarmonyLib;
 using System;
 using System.Collections.Generic;
@@ -69,7 +71,7 @@ namespace BetterBPApiLoader
 			{
 				if (Core.Instance.Dont_Save_On_Error)
 				{
-					if(Core.Instance.InvalidState)
+					if (Core.Instance.InvalidState)
 					{
 						InterfaceHandler.SendTextToAll("<color=red>NOT SAVING SERVER DATA DUE TO ERROR</color>", 300, new Vector2(0.5f, 0.75f), "not_saved");
 						return false;
@@ -80,6 +82,24 @@ namespace BetterBPApiLoader
 				}
 				return true;
 
+			}
+		}
+
+		[HarmonyPatch(typeof(SvManager))]
+		[HarmonyPatch(nameof(SvManager.SaveAll))]
+		public static class PatchSaveAll
+		{
+			public static bool Prefix()
+			{
+				if (Core.Instance.Dont_Save_On_Error)
+				{
+					if (Core.Instance.InvalidState)
+					{
+						InterfaceHandler.SendTextToAll("<color=red>NOT SAVING SERVER DATA DUE TO ERROR</color>", 300, new Vector2(0.5f, 0.75f), "not_saved");
+						return false;
+					}
+				}
+				return true;
 			}
 		}
 
