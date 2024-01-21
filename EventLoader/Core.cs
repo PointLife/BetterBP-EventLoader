@@ -186,6 +186,69 @@ namespace BetterBPApiLoader
 			}
 		}
 
+
+		[HarmonyPatch(typeof(EventsHandler))]
+		[HarmonyPatch(nameof(EventsHandler.Exec))]
+		class EventsHandler_Exec_Patch
+		{
+			static bool Prefix(string eventName, params object[] args)
+			{
+				Delegate @delegate;
+
+				if (EventsHandler.RegisteredEvents.TryGetValue(eventName, out @delegate))
+				{
+					try
+					{
+
+						@delegate.Method.Invoke(@delegate.Target, args);
+					}
+					catch (Exception ex)
+					{
+						LogError(@delegate, ex, eventName, args);
+					}
+				}
+				return false;
+			}
+
+			public static void LogError(Delegate del, Exception exception, string eventName, params object[] args)
+			{
+				Core.Instance.InvalidState = true;
+
+				var sb = new StringBuilder();
+
+				var i = 1;
+				sb.AppendLine($"========================== Advanced Event Error Tracker ==========================");
+				sb.AppendLine();
+				sb.AppendLine($"PluginName: {"NOT YET SUPPORTED FOR CUSTOMEVENTS"}");
+				sb.AppendLine($"Methode Name: {del.Method.Name}");
+				sb.AppendLine($"ExecutionMode: {"CUSTOMEVENT"}");
+				sb.AppendLine($"EventID: {"CUSTOMEVENT"}");
+				sb.AppendLine($"Event Name: {"CUSTOMEVENT"}");
+				sb.AppendLine();
+				sb.AppendLine($"Full Signature: {del.Method.FullDescription()}");
+				sb.AppendLine($"Assembly FullName: {del.Method.DeclaringType.Assembly.FullName}");
+				sb.AppendLine($"Assembly Location: {del.Method.DeclaringType.Assembly.Location}");
+				sb.AppendLine($"InvocationList: {del.GetInvocationList().Length}");
+				sb.AppendLine();
+				sb.AppendLine($"Methode Args: {del.Method.GetParameters().Join(x => x.Name.ToString())}");
+				sb.AppendLine($"Type Methode: {del.Method.GetParameters().Join(x => x.ParameterType.ToString())}");
+				sb.AppendLine($"Type Event  : {args.Join(x => x.GetType().ToString())}");
+				sb.AppendLine();
+				sb.AppendLine();
+				sb.AppendLine("Exception:");
+				sb.AppendLine(exception.ToString());
+				sb.AppendLine(exception.Message);
+				sb.AppendLine(exception.StackTrace);
+				sb.AppendLine();
+				//sb.AppendLine($"===================================================================================");
+
+				sb.AppendLine($"==========================     by PointLife Dev Team     ==========================");
+
+				Debug.LogError(sb.ToString());
+			}
+		}
+
+
 		[HarmonyPatch(typeof(DelegateContainer))]
 		[HarmonyPatch(nameof(DelegateContainer.Execute))]
 		class SourceHandler_Exec_Patch
@@ -257,23 +320,168 @@ namespace BetterBPApiLoader
 				var i = 1;
 				sb.AppendLine($"========================== Advanced Event Error Tracker ==========================");
 				sb.AppendLine();
-				sb.AppendLine($"PluginName: {DelegatePlugin[__instance][del]}");
+				try
+				{
+					sb.AppendLine($"PluginName: {DelegatePlugin[__instance][del]}");
+				}
+				catch (Exception e)
+				{
+					sb.AppendLine("=?=?=?=?=?=");
+
+					sb.AppendLine($"PluginName: Error");
+
+					sb.AppendLine(e.ToString());
+					sb.AppendLine(e.Message);
+					sb.AppendLine(e.StackTrace);
+					sb.AppendLine("=?=?=?=?=?=");
+
+					sb.AppendLine();
+					sb.AppendLine();
+
+				}
+
 				sb.AppendLine($"Methode Name: {del.Method.Name}");
-				sb.AppendLine($"ExecutionMode: {del.Method.GetCustomAttribute<TargetAttribute>().ExecutionMode}");
-				sb.AppendLine($"EventID: {del.Method.GetCustomAttribute<TargetAttribute>().EventID}");
-				sb.AppendLine($"Event Name: {FindConstantName(typeof(GameSourceEvent), del.Method.GetCustomAttribute<TargetAttribute>().EventID)}");
+				try
+				{
+					sb.AppendLine($"ExecutionMode: {del.Method.GetCustomAttribute<TargetAttribute>().ExecutionMode}");
+					sb.AppendLine($"EventID: {del.Method.GetCustomAttribute<TargetAttribute>().EventID}");
+					sb.AppendLine($"Event Name: {FindConstantName(typeof(GameSourceEvent), del.Method.GetCustomAttribute<TargetAttribute>().EventID)}");
+				}
+				catch (Exception e)
+				{
+					sb.AppendLine("=?=?=?=?=?=");
+
+					sb.AppendLine($"ExecutionMode: Error\nEventID: Error\nEvent Name: Error");
+
+					sb.AppendLine(e.ToString());
+					sb.AppendLine(e.Message);
+					sb.AppendLine(e.StackTrace);
+					sb.AppendLine("=?=?=?=?=?=");
+
+					sb.AppendLine();
+					sb.AppendLine();
+
+
+				}
 				sb.AppendLine();
-				sb.AppendLine($"Full Signature: {del.Method.FullDescription()}");
-				sb.AppendLine($"Assembly FullName: {del.Method.DeclaringType.Assembly.FullName}");
-				sb.AppendLine($"Assembly Location: {del.Method.DeclaringType.Assembly.Location}");
-				sb.AppendLine($"InvocationList: {del.GetInvocationList().Length}");
+				try
+				{
+
+					sb.AppendLine($"Full Signature: {del.Method.FullDescription()}");
+					sb.AppendLine($"Assembly FullName: {del.Method.DeclaringType.Assembly.FullName}");
+					sb.AppendLine($"Assembly Location: {del.Method.DeclaringType.Assembly.Location}");
+					sb.AppendLine($"InvocationList: {del.GetInvocationList().Length}");
+				}
+				catch (Exception e)
+				{
+					sb.AppendLine("=?=?=?=?=?=");
+
+					sb.AppendLine($"Full Signature: Error\nAssembly FullName: Error\nAssembly Location: Error\nInvocationList: Error");
+
+					sb.AppendLine(e.ToString());
+					sb.AppendLine(e.Message);
+					sb.AppendLine(e.StackTrace);
+					sb.AppendLine("=?=?=?=?=?=");
+
+					sb.AppendLine();
+					sb.AppendLine();
+
+
+				}
+
 				sb.AppendLine();
-				sb.AppendLine($"Methode Args: {del.Method.GetParameters().Join(x => x.Name.ToString())}");
-				sb.AppendLine($"Type Methode: {del.Method.GetParameters().Join(x => x.ParameterType.ToString())}");
-				sb.AppendLine($"Type Event  : {args.Join(x => x.GetType().ToString())}");
+				try
+				{
+					sb.AppendLine($"Methode Args: {del.Method.GetParameters().Join(x => x.Name.ToString())}");
+				}
+				catch (Exception e)
+				{
+					sb.AppendLine("=?=?=?=?=?=");
+
+					sb.AppendLine($"Methode Args: Error\nAssembly FullName: Error\nAssembly Location: Error\nInvocationList: Error");
+
+					sb.AppendLine(e.ToString());
+					sb.AppendLine(e.Message);
+					sb.AppendLine(e.StackTrace);
+					sb.AppendLine("=?=?=?=?=?=");
+
+					sb.AppendLine();
+					sb.AppendLine();
+
+
+				}
+				try
+				{
+					sb.AppendLine($"Type Methode: {del.Method.GetParameters().Join(x => x.ParameterType.ToString())}");
+					sb.AppendLine($"Type Event  : {args.Join(x => x.GetType().ToString())}");
+
+				}
+				catch (Exception e)
+				{
+					sb.AppendLine("=?=?=?=?=?=");
+
+					sb.AppendLine($"Type Methode: Error\nType Event: Error\n");
+
+					sb.AppendLine(e.ToString());
+					sb.AppendLine(e.Message);
+					sb.AppendLine(e.StackTrace);
+					sb.AppendLine("=?=?=?=?=?=");
+
+					sb.AppendLine();
+					sb.AppendLine();
+
+
+				}
+				sb.AppendLine();
+
+				try
+				{
+
+					sb.AppendLine("Advanced Argument Report:");
+
+					int count = 0;
+					foreach (var arg in args)
+					{
+						sb.Append($"Arg {count++}: ");
+						sb.Append($" {arg.GetType().Name}: {arg.ToString()}: ");
+
+						if (arg is ShPlayer player)
+						{
+							sb.Append($"Player: {player.username} {player.LogPosition}");
+						}
+						if (arg is ShApartment apartment)
+						{
+							sb.Append($"Apartment: {apartment.GetPlaceIndex}");
+						}
+						if (arg is Place place)
+						{
+							sb.Append($"Place: {place.GetIndex}");
+						}
+						
+
+						sb.AppendLine();
+
+					}
+				}
+				catch (Exception e)
+				{
+					sb.AppendLine("=?=?=?=?=?=");
+
+					sb.AppendLine($"Advanced Argument Report: Error");
+
+					sb.AppendLine(e.ToString());
+					sb.AppendLine(e.Message);
+					sb.AppendLine(e.StackTrace);
+					sb.AppendLine("=?=?=?=?=?=");
+
+					sb.AppendLine();
+					sb.AppendLine();
+
+
+				}
 				sb.AppendLine();
 				sb.AppendLine();
-				sb.AppendLine("Exception:");
+				sb.AppendLine("Event Exception:");
 				sb.AppendLine(exception.ToString());
 				sb.AppendLine(exception.Message);
 				sb.AppendLine(exception.StackTrace);
@@ -284,6 +492,8 @@ namespace BetterBPApiLoader
 
 				Debug.LogError(sb.ToString());
 			}
+
+
 		}
 
 	}
