@@ -320,6 +320,10 @@ namespace BetterBPApiLoader
 				var i = 1;
 				sb.AppendLine($"========================== Advanced Event Error Tracker ==========================");
 				sb.AppendLine();
+				sb.AppendLine($"Timestamp {System.DateTime.UtcNow}");
+
+				sb.AppendLine();
+
 				try
 				{
 					sb.AppendLine($"PluginName: {DelegatePlugin[__instance][del]}");
