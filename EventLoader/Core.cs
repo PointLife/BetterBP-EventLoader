@@ -39,7 +39,7 @@ namespace BetterBPApiLoader
 
 			if (!File.Exists(config_path_dont_save_on_error))
 			{
-				File.WriteAllText(config_path_dont_save_on_error, "1");
+				File.WriteAllText(config_path_dont_save_on_error, "0");
 			}
 			var dont_save_on_error_data = File.ReadAllText(config_path_dont_save_on_error);
 			if (dont_save_on_error_data.StartsWith("1"))
