@@ -222,8 +222,8 @@ namespace BetterBPApiLoader
 				sb.AppendLine($"PluginName: {"NOT YET SUPPORTED FOR CUSTOMEVENTS"}");
 				sb.AppendLine($"Methode Name: {del.Method.Name}");
 				sb.AppendLine($"ExecutionMode: {"CUSTOMEVENT"}");
-				sb.AppendLine($"EventID: {"CUSTOMEVENT"}");
-				sb.AppendLine($"Event Name: {"CUSTOMEVENT"}");
+				sb.AppendLine($"EventID: {eventName}");
+				sb.AppendLine($"Event Name: {eventName}");
 				sb.AppendLine();
 				sb.AppendLine($"Full Signature: {del.Method.FullDescription()}");
 				sb.AppendLine($"Assembly FullName: {del.Method.DeclaringType.Assembly.FullName}");
