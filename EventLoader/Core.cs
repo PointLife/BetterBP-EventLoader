@@ -73,7 +73,7 @@ namespace BetterBPApiLoader
 				{
 					if (Core.Instance.InvalidState)
 					{
-						InterfaceHandler.SendTextToAll("<color=red>NOT SAVING SERVER DATA DUE TO ERROR</color>", 300, new Vector2(0.5f, 0.75f), "not_saved");
+						InterfaceHandler.SendTextToAll("<color=red>NOT SAVING SERVER DATA DUE TO ERROR</color>", 300);
 						return false;
 
 					}
@@ -95,7 +95,7 @@ namespace BetterBPApiLoader
 				{
 					if (Core.Instance.InvalidState)
 					{
-						InterfaceHandler.SendTextToAll("<color=red>NOT SAVING SERVER DATA DUE TO ERROR</color>", 300, new Vector2(0.5f, 0.75f), "not_saved");
+						InterfaceHandler.SendTextToAll("<color=red>NOT SAVING SERVER DATA DUE TO ERROR</color>", 300);
 						return false;
 					}
 				}
