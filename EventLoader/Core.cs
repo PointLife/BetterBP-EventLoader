@@ -49,7 +49,7 @@ namespace BetterBPApiLoader
 			}
 			else
 			{
-				Debug.LogWarning("Not Saving when Error is cought enabled!");
+				Debug.LogWarning("Not Saving when Error is cought disabled!");
 			}
 
 			var type = typeof(PluginData);
