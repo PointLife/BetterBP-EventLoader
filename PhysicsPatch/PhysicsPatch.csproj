@@ -51,15 +51,14 @@
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>copy /Y "!1BetterBP-Loader.dll" "$(BPDIR)\Plugins"</PostBuildEvent>
-    <AssemblyTitle>BetterBP-EventLoader</AssemblyTitle>
+    <PostBuildEvent>copy /Y "!1BetterBP-Physics.dll" "$(BPDIR)\Plugins"</PostBuildEvent>
+    <AssemblyTitle>BetterBP-PhysicsPatch</AssemblyTitle>
     <Company>PointLife</Company>
-    <Product>BetterBP-EventLoader</Product>
+    <Product>BetterBP</Product>
     <Copyright>Copyright © PointLife 2024</Copyright>
-    <AssemblyName>!1BetterBP-Loader</AssemblyName>
+    <AssemblyVersion>1.0.1</AssemblyVersion>
+    <FileVersion>1.0.1</FileVersion>
+    <AssemblyName>!1BetterBP-Physics</AssemblyName>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <Version>$(VersionPrefix)1.0.2</Version>
-    <AssemblyVersion>1.0.2</AssemblyVersion>
-    <FileVersion>1.0.2</FileVersion>
   </PropertyGroup>
 </Project>

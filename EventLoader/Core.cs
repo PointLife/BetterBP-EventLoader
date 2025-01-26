@@ -186,7 +186,6 @@ namespace BetterBPApiLoader
 			}
 		}
 
-
 		[HarmonyPatch(typeof(EventsHandler))]
 		[HarmonyPatch(nameof(EventsHandler.Exec))]
 		class EventsHandler_Exec_Patch
@@ -216,7 +215,6 @@ namespace BetterBPApiLoader
 
 				var sb = new StringBuilder();
 
-				var i = 1;
 				sb.AppendLine($"========================== Advanced Event Error Tracker ==========================");
 				sb.AppendLine();
 				sb.AppendLine($"PluginName: {"NOT YET SUPPORTED FOR CUSTOMEVENTS"}");
@@ -317,7 +315,6 @@ namespace BetterBPApiLoader
 
 				var sb = new StringBuilder();
 
-				var i = 1;
 				sb.AppendLine($"========================== Advanced Event Error Tracker ==========================");
 				sb.AppendLine();
 				sb.AppendLine($"Timestamp {System.DateTime.UtcNow}");
@@ -451,7 +448,7 @@ namespace BetterBPApiLoader
 
 						if (arg is ShPlayer player)
 						{
-							sb.Append($"Player: {player.username} {player.LogPosition}");
+							sb.Append($"Player: {player.username} {player.Position} {player.Place.Index}");
 						}
 						if (arg is ShApartment apartment)
 						{
